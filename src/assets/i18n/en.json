@@ -1,0 +1,25 @@
+{
+  "ACCEPT": "Aceptar_en",
+"ACCOUNT_CONFIRM": "Confirma tu cuenta con el correo electronico_en",
+"ACCOUNT_CREATE": "Crear Cuenta_en",
+"ACCOUNT_ERROR_CONFIRM": "Error al enviar el email de confirmacion a tu correo electronico_en",
+"ACCOUNT_VERIFICATION": "Verifica tu cuenta_en",
+"CANCEL": "Cancelar_en",
+"EMAIL": "Email_en",
+"ERROR_SEND_RESET_PAS": "Error al enviar el email_en",
+"LOGIN": "Iniciar Sesión_en",
+"LOGIN_GOOGLE":"Login with Google",
+"OK": "OK_en",
+"PASSWORD": "Contraseña_en",
+"PASSWORD_CONFIRM": "Repite la contraseña_en",
+"PASSWORD_MACHING": "La contraseña no coincide_en",
+"PASSWORD_REMEMBER": "Recuperar contraseña_en",
+"PASSWORD_VALID": "Contraseña: Entre 6 y 20 caracteres_en",
+"REGISTRO_TITLE": "Registro_en",
+"SEND_EMAIL_VERIFICATION": "Solicitar verificación_en",
+"SEND_RESET_PASS": "Revisa tu email para reestablecer tu cuenta_en",
+"TERMS": " Aceptar condiciones_en",
+"VALID_EMAIL": "Introduce un email válido_en"
+
+  
+  }

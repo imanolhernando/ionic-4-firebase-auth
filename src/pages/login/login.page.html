@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>io4Auth</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="loginForm" padding (ngSubmit)="tryLogin(loginForm.value)">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+            <ion-item no-padding>
+              <ion-label  position="floating"><ion-icon name="mail" item-start class="text-primary"></ion-icon>{{'EMAIL'  | translate}}</ion-label> 
+              <ion-input formControlName="email" name="email" type="email"   [class.invalid]="!loginForm.controls['email'].valid &&
+              loginForm.controls['email'].touched"></ion-input>
+            </ion-item>
+            <small
+            no-padding
+            class="error-message"
+            *ngIf="!loginForm.controls['email'].valid &&
+               loginForm.controls['email'].touched"
+            >{{'VALID_EMAIL' | translate}}
+            </small>
+
+            <ion-item no-padding>
+              <ion-label position="floating"> <ion-icon name="lock" item-start class="text-primary"></ion-icon>{{'PASSWORD' | translate}}</ion-label> 
+              <ion-input formControlName="password" name="password" type="password"  [class.invalid]="!loginForm.controls['password'].valid&& loginForm.controls['password'].touched"></ion-input>
+            </ion-item>
+            <small
+            no-padding
+            class="error-message"
+            *ngIf="!loginForm.controls['password'].valid &&
+               loginForm.controls['password'].touched"
+            >{{'PASSWORD_VALID' | translate}}
+            </small>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-button type="submit" expand="block" [disabled]="loginForm.invalid">{{'LOGIN' | translate}}</ion-button>
+  </form>
+
+  <ion-button padding type="submit" expand="block"fill="outline" [disabled]="loginForm.invalid" (click)="presentAlertPrompt()">{{'PASSWORD_REMEMBER' | translate}}</ion-button>
+  <ion-button padding type="submit"expand="block"fill="outline" [disabled]="loginForm.invalid" (click)="tryGoogleLogin()" color=danger >{{'LOGIN_GOOGLE' | translate}}</ion-button>
+
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar padding>
+      <ion-button color="tertiary" expand="block" fill="outline" routerLink="/registro">{{'ACCOUNT_CREATE' | translate}}</ion-button>
+    </ion-toolbar>
+</ion-footer>
