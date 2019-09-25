@@ -71,11 +71,11 @@ export class LoginPage implements OnInit {
   createForm() {
     this.loginForm = this.formBuilder.group({
     email: [
-    'deknodek@gmail.com',
+    '',
     [Validators.required, Validators.minLength(0), Validators.maxLength(150), Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]
     ],
     password: [
-    '123456', 
+    '', 
     [Validators.required, Validators.minLength(6), Validators.maxLength(20)]
     ]
     });

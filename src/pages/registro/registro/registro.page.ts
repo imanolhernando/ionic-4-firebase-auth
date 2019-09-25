@@ -44,7 +44,7 @@ export class RegistroPage implements OnInit {
   createForm() {
     this.signupForm = this.formBuilder.group({
       email: [
-        'deknodek@gmail.com',
+        '',
         Validators.compose([Validators.required, Validators.minLength(0), Validators.maxLength(150), Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]),
       ],
      password: [
