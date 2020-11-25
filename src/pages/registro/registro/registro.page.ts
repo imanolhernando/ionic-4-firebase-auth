@@ -15,19 +15,19 @@ export class RegistroPage implements OnInit {
 
   public signupForm: FormGroup;
   public loading: any;
-  public isIgual:boolean;
-  public condiciones:boolean;
-  public confirm_account:string;
-  public error_confirm_account:string; 
+  public isIgual: boolean;
+  public condiciones: boolean;
+  public confirm_account: string;
+  public error_confirm_account: string;
   constructor(
-    private componentesService:ComponentesService,
+    private componentesService: ComponentesService,
     private authService: AutorizacionService,
     private formBuilder: FormBuilder,
     private router: Router,
     private afAuth: AngularFireAuth,
-    private translateService:TranslateService
+    private translateService: TranslateService
   ) {
-    
+
   }
 
   ngOnInit() {
@@ -35,11 +35,11 @@ export class RegistroPage implements OnInit {
     this.translate();
   }
 
-  translate(){
-    this.translateService.get('init').subscribe((text:string) => {
+  translate() {
+    this.translateService.get('init').subscribe((text: string) => {
       this.confirm_account = this.translateService.instant('ACCOUNT_CONFIRM'),
-      this.error_confirm_account= this.translateService.instant('ACCOUNT_ERROR_CONFIRM')
-      });
+        this.error_confirm_account = this.translateService.instant('ACCOUNT_ERROR_CONFIRM')
+    });
   }
   createForm() {
     this.signupForm = this.formBuilder.group({
@@ -47,7 +47,7 @@ export class RegistroPage implements OnInit {
         '',
         Validators.compose([Validators.required, Validators.minLength(0), Validators.maxLength(150), Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]),
       ],
-     password: [
+      password: [
         '',
         Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(20)]),
       ],
@@ -56,17 +56,17 @@ export class RegistroPage implements OnInit {
         Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(20)]),
       ],
       termsAccepted: [null, Validators.required],
-    }, {validator: this.matchingPasswords('password', 'confirmPassword')}); 
+    }, { validator: this.matchingPasswords('password', 'confirmPassword') });
   }
-  
+
   matchingPasswords(passwordKey: string, confirmPasswordKey: string) {
-    return (group: FormGroup): {[key: string]: any} => {
+    return (group: FormGroup): { [key: string]: any } => {
       let password = group.controls[passwordKey];
       let confirmPassword = group.controls[confirmPasswordKey];
-      this.isIgual=true;
+      this.isIgual = true;
 
       if (password.value !== confirmPassword.value) {
-        this.isIgual=false;
+        this.isIgual = false;
         return {
           mismatchedPasswords: true
         };
@@ -75,34 +75,34 @@ export class RegistroPage implements OnInit {
   }
 
 
-  onTermsChecked($event){
+  onTermsChecked($event) {
     console.log($event.detail.checked)
-      if (!$event.detail.checked){
-        this.signupForm.patchValue({ termsAccepted: null });
-      }
+    if (!$event.detail.checked) {
+      this.signupForm.patchValue({ termsAccepted: null });
+    }
   }
 
-  tryRegister(value){   
+  tryRegister(value) {
     this.componentesService.mostrarCargando();
-    this.authService.doRegister(value.email,value.password)
-    .then(res => {
-      debugger
-      this.componentesService.precarga.dismiss();
-      this.afAuth.auth.useDeviceLanguage();
+    this.authService.doRegister(value.email, value.password)
+      .then(res => {
+        debugger
+        this.componentesService.precarga.dismiss();
+        this.afAuth.auth.useDeviceLanguage();
 
-      this.authService.emailVerificaction().then(
-        ()=> {
-        this.componentesService.presentToast(this.confirm_account);
-      },error => {
-        this.componentesService.presentToast(this.error_confirm_account);
+        this.authService.emailVerificaction().then(
+          () => {
+            this.componentesService.presentToast(this.confirm_account);
+          }, error => {
+            this.componentesService.presentToast(this.error_confirm_account);
+          });
+
+      }, error => {
+        debugger
+        this.componentesService.precarga.dismiss();
+        //this.componentesService.presentToast(this.authService.authErrorCode(error));
+        this.componentesService.presentToast(error);
       });
-
-    }, error => {
-      debugger
-      this.componentesService.precarga.dismiss();
-      //this.componentesService.presentToast(this.authService.authErrorCode(error));
-      this.componentesService.presentToast(error);
-    });
   }
 
 }

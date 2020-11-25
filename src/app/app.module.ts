@@ -36,13 +36,13 @@ export function createTranslateLoader(http: HttpClient) {
     AngularFireModule,
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebase),
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: (createTranslateLoader),
-        deps: [HttpClient]
-      }
-    })
+      TranslateModule.forRoot({
+        loader: {
+          provide: TranslateLoader,
+          useFactory: (createTranslateLoader),
+          deps: [HttpClient]
+        }
+      })
     ],
   providers: [
     StatusBar,

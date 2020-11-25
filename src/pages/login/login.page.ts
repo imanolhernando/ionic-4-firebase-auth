@@ -6,7 +6,7 @@ import { ComponentesService } from './../../services/componentes/componentes.ser
 import { AngularFireAuth } from 'angularfire2/auth';
 
 import { AlertController } from '@ionic/angular';
-import {TranslateService}from '@ngx-translate/core';
+import {TranslateService} from '@ngx-translate/core';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -71,11 +71,11 @@ export class LoginPage implements OnInit {
   createForm() {
     this.loginForm = this.formBuilder.group({
     email: [
-    '',
+    'deknodek@gmail.com',
     [Validators.required, Validators.minLength(0), Validators.maxLength(150), Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]
     ],
     password: [
-    '', 
+    '123456', 
     [Validators.required, Validators.minLength(6), Validators.maxLength(20)]
     ]
     });

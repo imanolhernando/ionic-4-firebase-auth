@@ -6,7 +6,6 @@ const routes: Routes = [
   { path: 'default', pathMatch: 'full', redirectTo : 'login'},
   { path: 'login', loadChildren: '../pages/login/login.module#LoginPageModule'},
   { path: 'home', loadChildren: () => import('../pages/home/home.module').then( m => m.HomePageModule),canActivate: [AuthGuard]},
-  
   { path: 'registro', loadChildren: '../pages/registro/registro/registro.module#RegistroPageModule'},
 
 
