@@ -20,8 +20,22 @@ export class ComponentesService {
       message: msg,
       duration: 5000,
       position: 'top',
-      showCloseButton:true,
-      closeButtonText:"Cerrar"
+      buttons: [
+        {
+          side: 'start',
+          icon: 'star',
+          text: 'Favorite',
+          handler: () => {
+            console.log('Favorite clicked');
+          }
+        }, {
+          text: 'Done',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
     });
     toast.present();
   }

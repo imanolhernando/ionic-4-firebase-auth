@@ -1,6 +1,7 @@
+import { AutorizacionService } from './../../services/autorizacion/autorizacion.service';
+
+
 import { Component } from '@angular/core';
-import { ComponentesService } from 'src/services/componentes/componentes.service';
-import { AutorizacionService } from 'src/services/autorizacion/autorizacion.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,26 +10,25 @@ import { Router } from '@angular/router';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-user;
+
+  private user;
+
   constructor(
     private authService: AutorizacionService,
-    private componentesService:ComponentesService,
     private router: Router,
     ){
-      this.user=this.authService.currentUser().email;
+      this.authService.currentUser().then(currentUser=>{
+        this.user = currentUser;
+      });
     }
 
-  
-
-  ngOnInit() {
-  }
 
   tryLogout(){
     this.authService.doLogout().then(
     () => {
       this.router.navigate(['/login']);
     },(e) => {
-      console.log("Logout error", e);
+      console.log('Logout error', e);
     })
   }
 }
