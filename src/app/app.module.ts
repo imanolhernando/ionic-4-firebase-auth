@@ -11,10 +11,10 @@ import { AppRoutingModule } from './app-routing.module';
 
 import {ComponentesService  } from '../services/componentes/componentes.service';
 
-import { AngularFireModule } from 'angularfire2';
-import { AngularFireAuthModule } from 'angularfire2/auth';
-import { environment } from 'src/environments/environment';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { environment } from './../environments/environment';
+import { AngularFirestore } from '@angular/fire/firestore';
 import {AutorizacionService  } from '../services/autorizacion/autorizacion.service';
 import { GooglePlus } from '@ionic-native/google-plus/ngx'
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';

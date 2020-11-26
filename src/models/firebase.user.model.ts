@@ -1,5 +1,0 @@
-export class FirebaseUserModel {
-  
-    constructor(){
-    }
-  }

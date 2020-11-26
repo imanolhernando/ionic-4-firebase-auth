@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AutorizacionService } from './../../../services/autorizacion/autorizacion.service';
-import { Router } from '@angular/router';
 import { ComponentesService } from './../../../services/componentes/componentes.service';
-import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -19,16 +18,14 @@ export class RegistroPage implements OnInit {
   public condiciones: boolean;
   public confirm_account: string;
   public error_confirm_account: string;
+
   constructor(
     private componentesService: ComponentesService,
     private authService: AutorizacionService,
     private formBuilder: FormBuilder,
-    private router: Router,
-    private afAuth: AngularFireAuth,
+    private angularFireAuth: AngularFireAuth,
     private translateService: TranslateService
-  ) {
-
-  }
+  ) { }
 
   ngOnInit() {
     this.createForm();
@@ -74,7 +71,6 @@ export class RegistroPage implements OnInit {
     }
   }
 
-
   onTermsChecked($event) {
     console.log($event.detail.checked)
     if (!$event.detail.checked) {
@@ -88,7 +84,7 @@ export class RegistroPage implements OnInit {
       .then(res => {
         debugger
         this.componentesService.precarga.dismiss();
-        this.afAuth.auth.useDeviceLanguage();
+        this.angularFireAuth.useDeviceLanguage();
 
         this.authService.emailVerificaction().then(
           () => {

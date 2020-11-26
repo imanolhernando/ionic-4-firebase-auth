@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>
-      {{user}}
+    <ion-title *ngIf="user">
+      {{user.displayName}}
     </ion-title>
     <ion-button color="primary" (click)='tryLogout()' slot="end"><ion-icon name="log-out"></ion-icon></ion-button>
   </ion-toolbar>
@@ -13,7 +13,6 @@
       <ion-card-subtitle>Utenim ad minim veniam</ion-card-subtitle>
       <ion-card-title>Duis aute irure dolor</ion-card-title>
     </ion-card-header>
-  
     <ion-card-content>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
     </ion-card-content>

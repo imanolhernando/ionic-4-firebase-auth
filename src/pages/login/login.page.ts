@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { AutorizacionService } from './../../services/autorizacion/autorizacion.service';
 import { Router } from '@angular/router';
 import { ComponentesService } from './../../services/componentes/componentes.service';
-import { AngularFireAuth } from 'angularfire2/auth';
-
+import { AngularFireAuth } from '@angular/fire/auth';
 import { AlertController } from '@ionic/angular';
 import {TranslateService} from '@ngx-translate/core';
 @Component({
@@ -25,26 +24,26 @@ export class LoginPage implements OnInit {
   ACCOUNT_ERROR_CONFIRM: string;
   ACCOUNT_CONFIRM: string;
   EMAIL: string;
+
   constructor(
     private authService: AutorizacionService,
     public formBuilder: FormBuilder,
     private router: Router,
     private componentesService:ComponentesService,
-    private afAuth: AngularFireAuth,
+    private angularFireAuth: AngularFireAuth,
     public alertController: AlertController,
     private translateService:TranslateService
-    
-    ) { 
-      this.afAuth.authState.subscribe(
+    ) {
+      this.angularFireAuth.authState.subscribe(
         (user) => {
           if (user) {
            // console.error(user)
             this.router.navigate(['/home']);
           } else {
-            console.error("NO USER")
+            console.error('NO USER')
           }
         },(error) => {
-          console.error("ERROR",error)
+          console.error('ERROR',error)
         }
       );
     }
@@ -71,31 +70,32 @@ export class LoginPage implements OnInit {
   createForm() {
     this.loginForm = this.formBuilder.group({
     email: [
-    'deknodek@gmail.com',
+    '',
     [Validators.required, Validators.minLength(0), Validators.maxLength(150), Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]
     ],
     password: [
-    '123456', 
+    '',
     [Validators.required, Validators.minLength(6), Validators.maxLength(20)]
     ]
     });
     }
 
     tryLogin(value){
-      //this.componentesService.mostrarCargando();
           this.authService.doLogin(value)
           .then(res => {
-            if(this.authService.currentUser().emailVerified === true){
-              this.router.navigate(['/home']);
-            }else{
-              this.componentesService.precarga.dismiss();
-              this.presentAlertConfirmEmailVerificaction();
-            }
-            //this.componentesService.precarga.dismiss();
+            console.log('trylogin',res)
+            this.router.navigate(['/home']);
+            this.angularFireAuth.currentUser.then(currentUser=> {
+              if(currentUser.emailVerified){
+                  this.router.navigate(['/home']);
+                } else {
+                  this.presentAlertConfirmEmailVerificaction();
+                }
+            });
           }, err => {
-            //this.componentesService.precarga.dismiss();
+            // this.componentesService.precarga.dismiss();
             this.componentesService.presentToast(this.authService.authErrorCode(err));
-          })    
+          })
     }
 
     tryGoogleLogin(){
@@ -121,13 +121,13 @@ export class LoginPage implements OnInit {
           }, {
             text: this.SEND_EMAIL_VERIFICATION,
             handler: () => {
-              //this.componentesService.mostrarCargando();
+              // this.componentesService.mostrarCargando();
               this.authService.emailVerificaction().then(
               ()=> {
-                //this.componentesService.precarga.dismiss();
+                // this.componentesService.precarga.dismiss();
                 this.componentesService.presentToast(this.ACCOUNT_CONFIRM);
               },error => {
-                //this.componentesService.precarga.dismiss();
+                // this.componentesService.precarga.dismiss();
                 this.componentesService.presentToast(this.ACCOUNT_ERROR_CONFIRM);
               })
             }
@@ -170,10 +170,10 @@ export class LoginPage implements OnInit {
           }
         ]
       });
-  
+
       await alert.present();
     }
-  
+
 
 
 }
