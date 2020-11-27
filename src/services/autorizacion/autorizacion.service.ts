@@ -88,7 +88,7 @@ export class AutorizacionService {
         this.googlePlus.login({}).then((response) => {
           const googleCredential = firebase.default.auth.GoogleAuthProvider.credential(response.idToken);
           firebase.default.auth().signInWithCredential(googleCredential)
-          .then((user: any) => {// firebase.auth.UserCredential 
+          .then((user: firebase.default.auth.UserCredential ) => {// firebase.auth.UserCredential 
             if(user.additionalUserInfo.isNewUser){
               this.createDoc(user);
             }
@@ -100,7 +100,7 @@ export class AutorizacionService {
       }else{
         this.angularFireAuth
         .signInWithPopup(new firebase.default.auth.GoogleAuthProvider())
-        .then((user: any) => {// firebase.auth.UserCredential
+        .then((user: firebase.default.auth.UserCredential) => {// firebase.auth.UserCredential
           if(user.additionalUserInfo.isNewUser){
             this.createDoc(user);
           }
@@ -132,7 +132,7 @@ createDoc(newUser){
     return this.angularFireAuth
       .createUserWithEmailAndPassword(email, password)
       .then(
-        (newUserCredential: any) => { // TODO buscar modelo firebase.auth.UserCredential
+        (newUserCredential: firebase.default.auth.UserCredential) => { // TODO buscar modelo firebase.auth.UserCredential
         this.angularFirestore.doc(`/usuarios/${newUserCredential.user.uid}`)
           .set({ email }).then(
             ()=>{

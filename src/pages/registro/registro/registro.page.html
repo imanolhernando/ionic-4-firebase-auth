@@ -7,7 +7,8 @@
 <ion-content padding>
   <form [formGroup]="signupForm" (ngSubmit)="tryRegister(signupForm.value)">
     <ion-item>
-      <ion-label  position="floating"><ion-icon name="mail" item-start class="text-primary"></ion-icon>{{'EMAIL'  | translate}}</ion-label> 
+      <ion-icon name="mail-outline" slot="start"></ion-icon>
+      <ion-label  position="floating">{{'EMAIL'  | translate}}</ion-label> 
       <ion-input
         formControlName="email"
         type="email"
@@ -23,7 +24,8 @@
     </small>
 
     <ion-item>
-      <ion-label position="floating"> <ion-icon name="lock" item-start class="text-primary"></ion-icon>{{'PASSWORD' | translate}}</ion-label> 
+      <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+      <ion-label position="floating">{{'PASSWORD' | translate}}</ion-label> 
       <ion-input
         formControlName="password"
         [class.invalid]="!signupForm.controls['password'].valid && signupForm.controls['password'].touched"
@@ -38,7 +40,8 @@
     </small>
 
     <ion-item>
-      <ion-label position="floating"> <ion-icon name="lock" item-start class="text-primary"></ion-icon>{{'PASSWORD_CONFIRM' | translate}}</ion-label> 
+      <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+      <ion-label position="floating">{{'PASSWORD_CONFIRM' | translate}}</ion-label> 
       <ion-input
         formControlName="confirmPassword"
         [class.invalid]="!signupForm.controls['confirmPassword'].valid && signupForm.controls['confirmPassword'].touched">

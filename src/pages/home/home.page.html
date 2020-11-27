@@ -1,20 +1,22 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title *ngIf="user">
-      {{user.displayName}}
-    </ion-title>
-    <ion-button color="primary" (click)='tryLogout()' slot="end"><ion-icon name="log-out"></ion-icon></ion-button>
+    <ion-buttons  slot="end">
+      <ion-button color="primary" (click)='tryLogout()'><ion-icon name="log-out-outline" size=large></ion-icon></ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-card>
-    <ion-card-header>
-      <ion-card-subtitle>Utenim ad minim veniam</ion-card-subtitle>
-      <ion-card-title>Duis aute irure dolor</ion-card-title>
+  <ion-card  *ngIf="user">
+    <ion-card-header>   <ion-chip>
+      <ion-avatar>
+        <img src='{{user.photoURL}}'>
+      </ion-avatar>
+      <ion-label>{{user.email}}</ion-label>
+    </ion-chip>
     </ion-card-header>
-    <ion-card-content>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+    <ion-card-content> 
+      <ion-item>{{user.displayName}}</ion-item>  
     </ion-card-content>
   </ion-card>
 </ion-content>

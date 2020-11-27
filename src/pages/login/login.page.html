@@ -10,7 +10,8 @@
       <ion-row>
         <ion-col>
             <ion-item no-padding>
-              <ion-label  position="floating"><ion-icon name="mail" item-start class="text-primary"></ion-icon>{{'EMAIL'  | translate}}</ion-label> 
+              <ion-icon name="mail-outline" slot="start"></ion-icon>
+              <ion-label  position="floating">{{'EMAIL'  | translate}}</ion-label> 
               <ion-input formControlName="email" name="email" type="email"   [class.invalid]="!loginForm.controls['email'].valid &&
               loginForm.controls['email'].touched"></ion-input>
             </ion-item>
@@ -23,7 +24,8 @@
             </small>
 
             <ion-item no-padding>
-              <ion-label position="floating"> <ion-icon name="lock" item-start class="text-primary"></ion-icon>{{'PASSWORD' | translate}}</ion-label> 
+              <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+              <ion-label position="floating">{{'PASSWORD' | translate}}</ion-label> 
               <ion-input formControlName="password" name="password" type="password"  [class.invalid]="!loginForm.controls['password'].valid&& loginForm.controls['password'].touched"></ion-input>
             </ion-item>
             <small
@@ -39,8 +41,8 @@
     <ion-button type="submit" expand="block" [disabled]="loginForm.invalid">{{'LOGIN' | translate}}</ion-button>
   </form>
 
-  <ion-button padding type="submit" expand="block"fill="outline" [disabled]="loginForm.invalid" (click)="presentAlertPrompt()">{{'PASSWORD_REMEMBER' | translate}}</ion-button>
-  <ion-button padding type="submit"expand="block"fill="outline" [disabled]="loginForm.invalid" (click)="tryGoogleLogin()" color=danger >{{'LOGIN_GOOGLE' | translate}}</ion-button>
+  <ion-button padding type="submit" expand="block"fill="outline" [disabled]="loginForm.valid" (click)="presentAlertPrompt()">{{'PASSWORD_REMEMBER' | translate}}</ion-button>
+  <ion-button padding type="submit"expand="block"fill="outline" [disabled]="loginForm.valid" (click)="tryGoogleLogin()" color=danger >{{'LOGIN_GOOGLE' | translate}}</ion-button>
 
 </ion-content>
 
