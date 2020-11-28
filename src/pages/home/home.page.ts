@@ -1,3 +1,4 @@
+
 import { AutorizacionService } from './../../services/autorizacion/autorizacion.service';
 
 
@@ -7,7 +8,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+  styleUrls: ['../style.scss'],
 })
 export class HomePage {
 
@@ -26,7 +27,7 @@ export class HomePage {
   tryLogout(){
     this.authService.doLogout().then(
     () => {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/']);
     },(e) => {
       console.log('Logout error', e);
     })

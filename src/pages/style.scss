@@ -1,0 +1,39 @@
+
+main{
+  background-color: #013A6B;
+  background-image: -webkit-linear-gradient(-90deg, var(--ion-color-primary)50%, var(--ion-color-secondary) 50%);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  mat-card{
+  display: flex;
+  flex-direction: column;
+  }
+
+  img{
+    max-width: 10em;
+    align-self: center;
+  }
+
+  header, mat-card{
+      width: 25em;
+  }
+
+  header{
+    text-align: center;
+    padding: 1em;
+    font-size: x-large ;
+    font-weight: lighter;
+    color: #ffffff;
+    letter-spacing: 0.15em;
+  }
+
+  ion-item > ion-button {
+    width: 50%;
+
+  }
+  
+}

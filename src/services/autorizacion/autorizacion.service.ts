@@ -4,7 +4,7 @@ import { Platform } from '@ionic/angular';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { ComponentesService } from '../componentes/componentes.service';
-import * as firebase from 'firebase/';
+import * as firebase from 'firebase/app';
 @Injectable({
   providedIn: 'root'
 })
@@ -20,109 +20,103 @@ export class AutorizacionService {
 
   }
 
-  doLogin(value){
-    this.componentesService.mostrarCargando();
-    return new Promise<any>((resolve, reject) => {
+  doLogin(value) {
+    return new Promise<firebase.default.auth.UserCredential>((resolve, reject) => {
       this.angularFireAuth
-      .signInWithEmailAndPassword(value.email, value.password).then(
-        res =>{
-          this.componentesService.precarga.dismiss();
+      .signInWithEmailAndPassword(value.email, value.password)
+      .then(res =>{
           resolve(res);
-        },err =>{
-          this.componentesService.precarga.dismiss();
+        })
+      .catch(err => {
           reject(err);
-        }
-      );
+      });
     });
    }
 
-   doLogout(){
+   doLogout() {
     return new Promise<any>((resolve, reject) => {
       if(this.angularFireAuth.currentUser){
-        this.angularFireAuth.signOut().then(
-          res =>{
+        this.angularFireAuth.signOut()
+        .then(res =>{
             resolve(res);
-          },err =>{
+          })
+        .catch((err) => {
             reject(err);
-        });
+          });
       }else{
         reject();
       }
     });
    }
 
-   sendPasswordResetEmail(value){
-    this.componentesService.mostrarCargando();
+   sendPasswordResetEmail(value) {
     return new Promise<any>((resolve, reject) => {
       this.angularFireAuth.useDeviceLanguage();
       this.angularFireAuth
-      .sendPasswordResetEmail(value.email).then(
-        res =>{
-          this.componentesService.precarga.dismiss();
+      .sendPasswordResetEmail(value.email)
+      .then(res =>{
           resolve(res);
-        },err =>{
-          this.componentesService.precarga.dismiss();
-          reject(err);
-        }
-      );
+        })
+      .catch((err) => {
+            reject(err);
+        });
     });
    }
 
-   async emailVerificaction(){
-    this.componentesService.mostrarCargando();
-
+   async emailVerificaction() {
       this.angularFireAuth.useDeviceLanguage();
       if(this.angularFireAuth.currentUser){
-        (await this.angularFireAuth.currentUser).sendEmailVerification().then(
-          res =>{
-            this.componentesService.precarga.dismiss();
-          },err =>{
-            this.componentesService.precarga.dismiss();
-          }
-        )}
-  }
+        (await this.angularFireAuth.currentUser).sendEmailVerification()
+        .then( res =>{
+            console.log(res)
+          })
+        .catch((err) => {
+            console.log(err)
+          });
+      }
+    }
 
-  doGoogleLogin(){
+  doGoogleLogin() {
     return new Promise<any>((resolve, reject) => {
       if (this.platform.is('cordova')) {
         this.googlePlus.login({}).then((response) => {
           const googleCredential = firebase.default.auth.GoogleAuthProvider.credential(response.idToken);
           firebase.default.auth().signInWithCredential(googleCredential)
-          .then((user: any) => {// firebase.auth.UserCredential 
+          .then((user ) => {
             if(user.additionalUserInfo.isNewUser){
               this.createDoc(user);
             }
             resolve(user);
           });
-        },(err) => {
+        }).catch((err) => {
           reject(err);
         });
       }else{
         this.angularFireAuth
         .signInWithPopup(new firebase.default.auth.GoogleAuthProvider())
-        .then((user: any) => {// firebase.auth.UserCredential
+        .then((user: firebase.default.auth.UserCredential) => {
           if(user.additionalUserInfo.isNewUser){
             this.createDoc(user);
           }
           resolve(user);
-        },(err) => {
-         reject(err);
-       })
+        }).catch((err) => {
+          reject(err);
+        });
       }
     })
   }
 
-createDoc(newUser){
+createDoc(newUser) {
   return new Promise<any>((resolve, reject) => {
     const email = newUser.user.email;
     return this.angularFirestore.doc(`/usuarios/${newUser.user.uid}`)
-      .set({ email }).then(
-        ()=>{
+      .set({ email })
+      .then(()=>{
         resolve();
-      }), err=>{
+      }).catch((err)=>{
         console.warn(err)
         reject(err);
-      };
+      });
   });
 }
 
@@ -132,16 +126,18 @@ createDoc(newUser){
     return this.angularFireAuth
       .createUserWithEmailAndPassword(email, password)
       .then(
-        (newUserCredential: any) => { // TODO buscar modelo firebase.auth.UserCredential
+        (newUserCredential: firebase.default.auth.UserCredential) => { // TODO buscar modelo firebase.auth.UserCredential
         this.angularFirestore.doc(`/usuarios/${newUserCredential.user.uid}`)
-          .set({ email }).then(
-            ()=>{
+          .set({ email })
+          .then(()=>{
             resolve(newUserCredential);
-          }),err=>{
+          })
+          .catch((err)=>{
             console.warn(err)
             reject(err);
-          };
-      },err =>{
+          });
+      }).catch((err)=>{
+        console.warn(err)
         reject(err);
       });
     });
@@ -158,21 +154,24 @@ createDoc(newUser){
 
    authErrorCode(error) {
 
-    switch(error.code) {
-      case 'auth/user-not-found':
-        return 'Credenciales incorrectas';
-      case 'auth/wrong-password':
-        return 'Credenciales incorrectas';
-      case 'auth/invalid-email':
-        return 'Email incorrecto';
-      case 'auth/email-already-in-use':
-        return 'Ese email se encuentra registado';
-      case 'auth/weak-password':
-        return 'Contraseña: 6 caracteres';
+    return error.message
 
-      default:
-            return error.message
-  }}
+    // switch(error.code) {
+    //   case 'auth/user-not-found':
+    //     return 'Credenciales incorrectas';
+    //   case 'auth/wrong-password':
+    //     return 'Credenciales incorrectas';
+    //   case 'auth/invalid-email':
+    //     return 'Email incorrecto';
+    //   case 'auth/email-already-in-use':
+    //     return 'Ese email se encuentra registado';
+    //   case 'auth/weak-password':
+    //     return 'Contraseña: 6 caracteres';
+
+    //   default:
+    //         return error.message
+  // }
+}
 
 
 

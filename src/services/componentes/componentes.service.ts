@@ -7,7 +7,8 @@ import { AlertController } from '@ionic/angular';
   providedIn: 'root'
 })
 export class ComponentesService {
-  precarga:any;
+
+
   constructor(
     public toastController: ToastController,
     public modalController:ModalController,
@@ -16,20 +17,14 @@ export class ComponentesService {
     ) { }
 
   async presentToast(msg:string) {
+
+    this.toastController.dismiss().catch(e=>{});
     const toast = await this.toastController.create({
       message: msg,
-      duration: 5000,
+      duration: 10000,
       position: 'top',
-      buttons: [
-        {
-          side: 'start',
-          icon: 'star',
-          text: 'Favorite',
-          handler: () => {
-            console.log('Favorite clicked');
-          }
-        }, {
-          text: 'Done',
+      buttons: [ {
+          icon: 'close',
           role: 'cancel',
           handler: () => {
             console.log('Cancel clicked');
@@ -39,15 +34,6 @@ export class ComponentesService {
     });
     toast.present();
   }
- 
-
-    async mostrarCargando() {
-      this.precarga = await this.loadingCtrl.create({
-        //message: '',
-        //duration: 2000
-      });
-      await this.precarga.present();
-    }
 
     async presentModal(ModalPage) {
       const modal = await this.modalController.create({
@@ -58,7 +44,7 @@ export class ComponentesService {
 
     async presentAlertConfirm(header, msg, btn1, btn2) {
       const alert = await this.alertController.create({
-        header: header,
+        header,
         message: msg,
         buttons: [
           {
@@ -76,7 +62,6 @@ export class ComponentesService {
           }
         ]
       });
-  
       await alert.present();
     }
 }
