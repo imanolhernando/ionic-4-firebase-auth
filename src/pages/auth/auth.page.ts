@@ -16,22 +16,10 @@ export class AuthPage implements OnInit {
   link:string;
   loginForm: FormGroup;
   resetPasswordForm: FormGroup;
-  ACCOUNT_VERIFICATION:string;
-  SEND_EMAIL_VERIFICATION: string;
-  CANCEL: string;
-  VALID_EMAIL: string;
-  EMAIL_VERIFICATION: string;
-  ACCEPT: string;
-  OK: string;
-  ACCOUNT_ERROR_CONFIRM: string;
-  ACCOUNT_CONFIRM: string;
-  EMAIL: string;
-  public signupForm: FormGroup;
-  public loading: any;
-  public isIgual: boolean;
-  public condiciones: boolean;
-  public confirm_account: string;
-  public error_confirm_account: string;
+
+  signupForm: FormGroup;
+  translations;
+  isIgual: boolean;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -63,22 +51,41 @@ export class AuthPage implements OnInit {
     this.createForm();
     this.translate();
   }
-  translate(){
-    this.translateService.get('init').subscribe((text:string) => {
-      this.confirm_account = this.translateService.instant('ACCOUNT_CONFIRM'),
-        this.error_confirm_account = this.translateService.instant('ACCOUNT_ERROR_CONFIRM')
-        this.ACCOUNT_VERIFICATION = this.translateService.instant('ACCOUNT_VERIFICATION'),
-        this.SEND_EMAIL_VERIFICATION= this.translateService.instant('SEND_EMAIL_VERIFICATION'),
-        this.CANCEL = this.translateService.instant('CANCEL'),
-        this.VALID_EMAIL= this.translateService.instant('VALID_EMAIL'),
-        this.EMAIL_VERIFICATION = this.translateService.instant('ACCOUNT_VERIFICATION'),
-        this.ACCEPT= this.translateService.instant('ACCEPT'),
-        this.OK= this.translateService.instant('OK'),
-        this.ACCOUNT_ERROR_CONFIRM = this.translateService.instant('ACCOUNT_ERROR_CONFIRM'),
-        this.ACCOUNT_CONFIRM= this.translateService.instant('ACCOUNT_CONFIRM'),
-        this.EMAIL= this.translateService.instant('EMAIL')
-    });
-  }
+  // translate(){
+  //   this.translateService.get('init').subscribe((text:string) => {
+  //     this.confirm_account = this.translateService.instant('ACCOUNT_CONFIRM'),
+  //       this.error_confirm_account = this.translateService.instant('ACCOUNT_ERROR_CONFIRM')
+  //       this.ACCOUNT_VERIFICATION = this.translateService.instant('ACCOUNT_VERIFICATION'),
+  //       this.SEND_EMAIL_VERIFICATION= this.translateService.instant('SEND_EMAIL_VERIFICATION'),
+  //       this.CANCEL = this.translateService.instant('CANCEL'),
+  //       this.VALID_EMAIL= this.translateService.instant('VALID_EMAIL'),
+  //       this.EMAIL_VERIFICATION = this.translateService.instant('ACCOUNT_VERIFICATION'),
+  //       this.ACCEPT= this.translateService.instant('ACCEPT'),
+  //       this.OK= this.translateService.instant('OK'),
+  //       this.ACCOUNT_ERROR_CONFIRM = this.translateService.instant('ACCOUNT_ERROR_CONFIRM'),
+  //       this.ACCOUNT_CONFIRM= this.translateService.instant('ACCOUNT_CONFIRM'),
+  //       this.EMAIL= this.translateService.instant('EMAIL')
+  //   });
+  // }
+    // TRADUCCIONES
+    translate() {
+      this.translateService.get(
+         ['ACCOUNT_CONFIRM',
+         'ACCOUNT_ERROR_CONFIRM',
+         'ACCOUNT_VERIFICATION',
+         'SEND_EMAIL_VERIFICATION',
+          'CANCEL',
+         'VALID_EMAIL',
+         'ACCOUNT_VERIFICATION',
+         'ACCEPT',
+         'OK',
+        'ACCOUNT_CONFIRM',
+        'EMAIL',
+        ])
+      .subscribe((translations) => {
+        this.translations = translations;
+      });
+    }
   createForm() {
     this.loginForm = this.formBuilder.group({
     email: [
@@ -112,8 +119,8 @@ export class AuthPage implements OnInit {
         Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(20)]),
       ],
       // termsAccepted: [null, Validators.required],
-    }, { 
-      validator: this.matchingPasswords('password', 'confirmPassword') 
+    }, {
+      validator: this.matchingPasswords('password', 'confirmPassword')
     });
     }
 
@@ -148,21 +155,21 @@ export class AuthPage implements OnInit {
 
     async presentAlertConfirmEmailVerificaction() {
       const alert = await this.alertController.create({
-        header:  this.ACCOUNT_VERIFICATION,
-        message: this.ACCOUNT_CONFIRM,
+        header:  this.translations.ACCOUNT_VERIFICATION,
+        message: this.translations.ACCOUNT_CONFIRM,
         buttons: [
           {
-            text: this.ACCEPT,
+            text: this.translations.ACCEPT,
             role: 'cancel',
             cssClass: 'secondary'
           }, {
-            text: this.SEND_EMAIL_VERIFICATION,
+            text: this.translations.SEND_EMAIL_VERIFICATION,
             handler: () => {
               this.authService.emailVerificaction().then(
               ()=> {
-                this.componentesService.presentToast(this.ACCOUNT_CONFIRM);
+                this.componentesService.presentToast(this.translations.ACCOUNT_CONFIRM);
               },error => {
-                this.componentesService.presentToast(this.ACCOUNT_ERROR_CONFIRM);
+                this.componentesService.presentToast(this.translations.ACCOUNT_ERROR_CONFIRM);
               })
             }
           }
@@ -174,9 +181,9 @@ export class AuthPage implements OnInit {
     tryresetPassword(value){
     this.authService.sendPasswordResetEmail(value).then(
       (res)=>{
-        this.componentesService.presentToast(this.ACCOUNT_CONFIRM);
+        this.componentesService.presentToast(this.translations.ACCOUNT_CONFIRM);
       },(e)=>{
-        this.componentesService.presentToast(this.ACCOUNT_ERROR_CONFIRM);
+        this.componentesService.presentToast(this.translations.ACCOUNT_ERROR_CONFIRM);
       })
     }
 
@@ -209,9 +216,9 @@ export class AuthPage implements OnInit {
 
           this.authService.emailVerificaction().then(
             () => {
-              this.componentesService.presentToast(this.confirm_account);
+              this.componentesService.presentToast(this.translations.ACCOUNT_CONFIRM);
             }, error => {
-              this.componentesService.presentToast(this.error_confirm_account);
+              this.componentesService.presentToast(this.translations.ACCOUNT_ERROR_CONFIRM);
             });
 
         }, error => {
