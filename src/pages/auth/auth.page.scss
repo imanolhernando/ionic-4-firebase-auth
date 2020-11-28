@@ -7,6 +7,16 @@ main{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    mat-card{
+    display: flex;
+    flex-direction: column;
+    }
+
+    img{
+      max-width: 10em;
+      align-self: center;
+    }
   
     header, mat-card{
         width: 25em;
@@ -20,9 +30,11 @@ main{
       color: #ffffff;
       letter-spacing: 0.15em;
     }
+
     ion-item > ion-button {
       width: 50%;
 
     }
+    
 }
   

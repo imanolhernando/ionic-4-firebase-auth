@@ -16,6 +16,8 @@ export class ComponentesService {
     ) { }
 
   async presentToast(msg:string) {
+    
+    this.toastController.dismiss().catch(e=>{});
     const toast = await this.toastController.create({
       message: msg,
       duration: 150000,

@@ -23,13 +23,14 @@ export class AutorizacionService {
   doLogin(value){
     return new Promise<any>((resolve, reject) => {
       this.angularFireAuth
-      .signInWithEmailAndPassword(value.email, value.password).then(
+      .signInWithEmailAndPassword(value.email, value.password)
+      .then(
         res =>{
           resolve(res);
-        },err =>{
+        })
+      .catch((err) => {
           reject(err);
-        }
-      );
+      });
     });
    }
 
@@ -87,7 +88,7 @@ export class AutorizacionService {
             }
             resolve(user);
           });
-        },(err) => {
+        }).catch((err) => {
           reject(err);
         });
       }else{
@@ -98,9 +99,9 @@ export class AutorizacionService {
             this.createDoc(user);
           }
           resolve(user);
-        },(err) => {
-         reject(err);
-       })
+        }).catch((err) => {
+          reject(err);
+        });
       }
     })
   }
@@ -151,21 +152,24 @@ createDoc(newUser){
 
    authErrorCode(error) {
 
-    switch(error.code) {
-      case 'auth/user-not-found':
-        return 'Credenciales incorrectas';
-      case 'auth/wrong-password':
-        return 'Credenciales incorrectas';
-      case 'auth/invalid-email':
-        return 'Email incorrecto';
-      case 'auth/email-already-in-use':
-        return 'Ese email se encuentra registado';
-      case 'auth/weak-password':
-        return 'Contraseña: 6 caracteres';
+    return error.message
 
-      default:
-            return error.message
-  }}
+    // switch(error.code) {
+    //   case 'auth/user-not-found':
+    //     return 'Credenciales incorrectas';
+    //   case 'auth/wrong-password':
+    //     return 'Credenciales incorrectas';
+    //   case 'auth/invalid-email':
+    //     return 'Email incorrecto';
+    //   case 'auth/email-already-in-use':
+    //     return 'Ese email se encuentra registado';
+    //   case 'auth/weak-password':
+    //     return 'Contraseña: 6 caracteres';
+
+    //   default:
+    //         return error.message
+  // }
+}
 
 
 

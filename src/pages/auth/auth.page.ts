@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { AutorizacionService } from 'src/services/autorizacion/autorizacion.service';
@@ -13,8 +13,9 @@ import { ComponentesService } from 'src/services/componentes/componentes.service
   styleUrls: ['./auth.page.scss'],
 })
 export class AuthPage implements OnInit {
-  link=false;
+  link:string;
   loginForm: FormGroup;
+  resetPasswordForm: FormGroup;
   ACCOUNT_VERIFICATION:string;
   SEND_EMAIL_VERIFICATION: string;
   CANCEL: string;
@@ -33,6 +34,7 @@ export class AuthPage implements OnInit {
   public error_confirm_account: string;
 
   constructor(
+    private activatedRoute: ActivatedRoute,
     private authService: AutorizacionService,
     public formBuilder: FormBuilder,
     private router: Router,
@@ -57,6 +59,7 @@ export class AuthPage implements OnInit {
 
 
   ngOnInit() {
+    this.link = this.activatedRoute.snapshot.paramMap.get('link');
     this.createForm();
     this.translate();
   }
@@ -87,6 +90,14 @@ export class AuthPage implements OnInit {
     [Validators.required, Validators.minLength(6), Validators.maxLength(20)]
     ]
     });
+
+    this.resetPasswordForm = this.formBuilder.group({
+      email: [
+      '',
+      [Validators.required, Validators.minLength(0), Validators.maxLength(150), Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]
+      ]
+    });
+
     this.signupForm = this.formBuilder.group({
       email: [
         '',
@@ -100,8 +111,10 @@ export class AuthPage implements OnInit {
         '',
         Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(20)]),
       ],
-      termsAccepted: [null, Validators.required],
-    }, { validator: this.matchingPasswords('password', 'confirmPassword') });
+      // termsAccepted: [null, Validators.required],
+    }, { 
+      validator: this.matchingPasswords('password', 'confirmPassword') 
+    });
     }
 
     tryLogin(value){
@@ -116,8 +129,9 @@ export class AuthPage implements OnInit {
                   this.presentAlertConfirmEmailVerificaction();
                 }
             });
-          }, err => {
-            this.componentesService.presentToast(this.authService.authErrorCode(err));
+          }).catch(e=>{
+            console.warn(e);
+              this.componentesService.presentToast(this.authService.authErrorCode(e));
           })
     }
 
@@ -157,44 +171,14 @@ export class AuthPage implements OnInit {
       await alert.present();
     }
 
-
-    async presentAlertPrompt() {
-      const alert = await this.alertController.create({
-        header: this.VALID_EMAIL,
-        inputs: [
-          {
-            name: 'email',
-            type: 'email',
-            placeholder: this.EMAIL
-          }
-        ],
-        buttons: [
-          {
-            text: this.CANCEL,
-            role: 'cancel',
-            cssClass: 'secondary',
-            handler: () => {
-              console.log('Confirm Cancel');
-            }
-          }, {
-            text: this.OK,
-            handler: (value) => {
-              console.log('Confirm Ok',value);
-              this.authService.sendPasswordResetEmail(value).then(
-                (res)=>{
-                  this.componentesService.presentToast(this.ACCOUNT_CONFIRM);
-                },(e)=>{
-                  this.componentesService.presentToast(this.ACCOUNT_ERROR_CONFIRM);
-                })
-            }
-          }
-        ]
-      });
-
-      await alert.present();
+    tryresetPassword(value){
+    this.authService.sendPasswordResetEmail(value).then(
+      (res)=>{
+        this.componentesService.presentToast(this.ACCOUNT_CONFIRM);
+      },(e)=>{
+        this.componentesService.presentToast(this.ACCOUNT_ERROR_CONFIRM);
+      })
     }
-
-
 
     matchingPasswords(passwordKey: string, confirmPasswordKey: string) {
       return (group: FormGroup): { [key: string]: any } => {
@@ -219,7 +203,6 @@ export class AuthPage implements OnInit {
     }
 
     tryRegister(value) {
-      this.componentesService.mostrarCargando();
       this.authService.doRegister(value.email, value.password)
         .then(res => {
           this.angularFireAuth.useDeviceLanguage();
@@ -238,8 +221,8 @@ export class AuthPage implements OnInit {
 
 
 
-    toogle() {
-      this.link = !this.link;
+    toogle(value) {
+      this.link = value;
     }
 
 }
