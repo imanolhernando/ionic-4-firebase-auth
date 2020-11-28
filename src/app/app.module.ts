@@ -21,7 +21,9 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Globalization } from '@ionic-native/globalization/ngx';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
 
+import { FlexLayoutModule } from '@angular/flex-layout';
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -35,6 +37,8 @@ export function createTranslateLoader(http: HttpClient) {
     AngularFireAuthModule,
     AngularFireModule,
     HttpClientModule,
+    FlexLayoutModule,
+    BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase),
       TranslateModule.forRoot({
         loader: {

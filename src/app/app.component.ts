@@ -3,9 +3,7 @@ import { Component } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import 'firebase/auth';
 import { TranslateService } from '@ngx-translate/core';
-import { Globalization } from '@ionic-native/globalization/ngx';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +16,6 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private translateService: TranslateService,
-    private globalization: Globalization,
   ) {
     this.initializeApp();
   }
@@ -32,19 +29,22 @@ export class AppComponent {
     });
   }
   setLanguage(){
-    if (this.platform.is('cordova')) {
-      this.globalization.getPreferredLanguage()
-      .then(res => {
-          console.log("language ",res.value);
-          this.translateService.use(res.value.substring(0, 2).toLowerCase());
-      }).catch(e => {
-          console.error(e);
-      });
-    }else{
-      var language = navigator.language; 
-      console.log("language ",language) ;
-      this.translateService.use(language.substring(0, 2).toLowerCase());
-    } 
+    const language = navigator.language;
+    console.log('language ',language) ;
+    this.translateService.use(language.substring(0, 2).toLowerCase());
+    // if (this.platform.is('cordova')) {
+    //   this.globalization.getPreferredLanguage()
+    //   .then(res => {
+    //       console.log('language ',res.value);
+    //       this.translateService.use(res.value.substring(0, 2).toLowerCase());
+    //   }).catch(e => {
+    //       console.error(e);
+    //   });
+    // }else{
+    //   const language = navigator.language;
+    //   console.log('language ',language) ;
+    //   this.translateService.use(language.substring(0, 2).toLowerCase());
+    // }
   }
- 
+
 }

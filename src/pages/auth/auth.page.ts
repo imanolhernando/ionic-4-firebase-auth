@@ -1,18 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { AutorizacionService } from './../../services/autorizacion/autorizacion.service';
-import { Router } from '@angular/router';
-import { ComponentesService } from './../../services/componentes/componentes.service';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import {TranslateService} from '@ngx-translate/core';
-@Component({
-  selector: 'app-login',
-  templateUrl: './login.page.html',
-  styleUrls: ['./login.page.scss'],
-})
-export class LoginPage implements OnInit {
+import { TranslateService } from '@ngx-translate/core';
+import { AutorizacionService } from 'src/services/autorizacion/autorizacion.service';
+import { ComponentesService } from 'src/services/componentes/componentes.service';
 
+@Component({
+  selector: 'app-auth',
+  templateUrl: './auth.page.html',
+  styleUrls: ['./auth.page.scss'],
+})
+export class AuthPage implements OnInit {
+  link=false;
   loginForm: FormGroup;
   ACCOUNT_VERIFICATION:string;
   SEND_EMAIL_VERIFICATION: string;
@@ -24,6 +25,12 @@ export class LoginPage implements OnInit {
   ACCOUNT_ERROR_CONFIRM: string;
   ACCOUNT_CONFIRM: string;
   EMAIL: string;
+  public signupForm: FormGroup;
+  public loading: any;
+  public isIgual: boolean;
+  public condiciones: boolean;
+  public confirm_account: string;
+  public error_confirm_account: string;
 
   constructor(
     private authService: AutorizacionService,
@@ -55,6 +62,8 @@ export class LoginPage implements OnInit {
   }
   translate(){
     this.translateService.get('init').subscribe((text:string) => {
+      this.confirm_account = this.translateService.instant('ACCOUNT_CONFIRM'),
+        this.error_confirm_account = this.translateService.instant('ACCOUNT_ERROR_CONFIRM')
         this.ACCOUNT_VERIFICATION = this.translateService.instant('ACCOUNT_VERIFICATION'),
         this.SEND_EMAIL_VERIFICATION= this.translateService.instant('SEND_EMAIL_VERIFICATION'),
         this.CANCEL = this.translateService.instant('CANCEL'),
@@ -70,7 +79,7 @@ export class LoginPage implements OnInit {
   createForm() {
     this.loginForm = this.formBuilder.group({
     email: [
-    'deknodek@gmail.com',
+    'deknodesk@gmail.com',
     [Validators.required, Validators.minLength(0), Validators.maxLength(150), Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]
     ],
     password: [
@@ -78,6 +87,21 @@ export class LoginPage implements OnInit {
     [Validators.required, Validators.minLength(6), Validators.maxLength(20)]
     ]
     });
+    this.signupForm = this.formBuilder.group({
+      email: [
+        '',
+        Validators.compose([Validators.required, Validators.minLength(0), Validators.maxLength(150), Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]),
+      ],
+      password: [
+        '',
+        Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(20)]),
+      ],
+      confirmPassword: [
+        '',
+        Validators.compose([Validators.required, Validators.minLength(6), Validators.maxLength(20)]),
+      ],
+      termsAccepted: [null, Validators.required],
+    }, { validator: this.matchingPasswords('password', 'confirmPassword') });
     }
 
     tryLogin(value){
@@ -93,7 +117,6 @@ export class LoginPage implements OnInit {
                 }
             });
           }, err => {
-            // this.componentesService.precarga.dismiss();
             this.componentesService.presentToast(this.authService.authErrorCode(err));
           })
     }
@@ -101,7 +124,7 @@ export class LoginPage implements OnInit {
     tryGoogleLogin(){
       this.authService.doGoogleLogin()
       .then((res) => {
-        console.log(res);
+        console.log('tryGoogleLogin',res);
         this.router.navigate(['/home']);
       }, (err) => {
         this.componentesService.presentToast(this.authService.authErrorCode(err));
@@ -121,13 +144,10 @@ export class LoginPage implements OnInit {
           }, {
             text: this.SEND_EMAIL_VERIFICATION,
             handler: () => {
-              // this.componentesService.mostrarCargando();
               this.authService.emailVerificaction().then(
               ()=> {
-                // this.componentesService.precarga.dismiss();
                 this.componentesService.presentToast(this.ACCOUNT_CONFIRM);
               },error => {
-                // this.componentesService.precarga.dismiss();
                 this.componentesService.presentToast(this.ACCOUNT_ERROR_CONFIRM);
               })
             }
@@ -175,5 +195,51 @@ export class LoginPage implements OnInit {
     }
 
 
+
+    matchingPasswords(passwordKey: string, confirmPasswordKey: string) {
+      return (group: FormGroup): { [key: string]: any } => {
+        const password = group.controls[passwordKey];
+        const confirmPassword = group.controls[confirmPasswordKey];
+        this.isIgual = true;
+
+        if (password.value !== confirmPassword.value) {
+          this.isIgual = false;
+          return {
+            mismatchedPasswords: true
+          };
+        }
+      }
+    }
+
+    onTermsChecked($event) {
+      console.log($event.detail.checked)
+      if (!$event.detail.checked) {
+        this.signupForm.patchValue({ termsAccepted: null });
+      }
+    }
+
+    tryRegister(value) {
+      this.componentesService.mostrarCargando();
+      this.authService.doRegister(value.email, value.password)
+        .then(res => {
+          this.angularFireAuth.useDeviceLanguage();
+
+          this.authService.emailVerificaction().then(
+            () => {
+              this.componentesService.presentToast(this.confirm_account);
+            }, error => {
+              this.componentesService.presentToast(this.error_confirm_account);
+            });
+
+        }, error => {
+          this.componentesService.presentToast(error);
+        });
+    }
+
+
+
+    toogle() {
+      this.link = !this.link;
+    }
 
 }

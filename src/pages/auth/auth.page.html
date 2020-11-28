@@ -1,0 +1,80 @@
+
+<ion-content>
+  <main>
+
+    <mat-card class="mat-elevation-z8">   
+      <mat-card-actions>
+        <ion-item >
+          <ion-button fill="clear" (click)="presentAlertPrompt()">{{'PASSWORD_REMEMBER' | translate}}</ion-button>
+          <ion-button fill="clear" (click)="toogle()" *ngIf="!link">{{'ACCOUNT_CREATE' | translate}}</ion-button>
+          <ion-button fill="clear" (click)="toogle()" *ngIf="link" >{{'LOGIN' | translate}}</ion-button>
+        </ion-item>
+      </mat-card-actions>     
+      <img alt="" src="assets/logo.svg" />
+      <mat-card-content>
+
+      <form [formGroup]="loginForm" padding (ngSubmit)="tryLogin(loginForm.value)" *ngIf="!link" >
+        <ion-item >
+          <ion-icon name="mail-outline" slot="start"></ion-icon>
+          <ion-label  position="floating">{{'EMAIL'  | translate}}</ion-label> 
+          <ion-input formControlName="email" name="email" type="email" [class.invalid]="!loginForm.controls['email'].valid &&
+          loginForm.controls['email'].touched"></ion-input>
+        </ion-item>
+        <small class="error-message" *ngIf="!loginForm.controls['email'].valid && loginForm.controls['email'].touched" >{{'VALID_EMAIL' | translate}} </small>
+        <ion-item >
+          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+          <ion-label position="floating">{{'PASSWORD' | translate}}</ion-label> 
+          <ion-input formControlName="password" name="password" type="password"  [class.invalid]="!loginForm.controls['password'].valid&& loginForm.controls['password'].touched"></ion-input>
+        </ion-item>
+        <small class="error-message" *ngIf="!loginForm.controls['password'].valid && loginForm.controls['password'].touched" >{{'PASSWORD_VALID' | translate}} </small>
+        <ion-button type="submit" expand="block" fill="solid" [disabled]="loginForm.invalid"><ion-icon name="log-in-outline" slot="start"></ion-icon> {{'LOGIN' | translate}}</ion-button>
+      </form> 
+
+
+      
+
+      <form [formGroup]="signupForm" (ngSubmit)="tryRegister(signupForm.value)" *ngIf="link" >
+        <ion-item>
+          <ion-icon name="mail-outline" slot="start"></ion-icon>
+          <ion-label position="floating">{{'EMAIL'  | translate}}</ion-label>
+          <ion-input formControlName="email" type="email"
+            [class.invalid]="!signupForm.controls['email'].valid && signupForm.controls['email'].touched">
+          </ion-input>
+        </ion-item>
+        <small class="error-message" *ngIf="!signupForm.controls['email'].valid && signupForm.controls['email'].touched">{{'VALID_EMAIL' | translate}} </small>
+
+        <ion-item>
+          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+          <ion-label position="floating">{{'PASSWORD' | translate}}</ion-label>
+          <ion-input formControlName="password"
+            [class.invalid]="!signupForm.controls['password'].valid && signupForm.controls['password'].touched">
+          </ion-input>
+        </ion-item>
+        <small class="error-message" *ngIf="!signupForm.controls['password'].valid  && signupForm.controls['password'].touched">{{'PASSWORD_VALID' | translate}} </small>
+
+        <ion-item>
+          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+          <ion-label position="floating">{{'PASSWORD_CONFIRM' | translate}}</ion-label>
+          <ion-input formControlName="confirmPassword"
+            [class.invalid]="!signupForm.controls['confirmPassword'].valid && signupForm.controls['confirmPassword'].touched">
+          </ion-input>
+        </ion-item>
+        <small class="error-message" *ngIf="!signupForm.controls['confirmPassword'].valid  && signupForm.controls['confirmPassword'].touched">{{'PASSWORD_VALID' | translate}} </small>
+        <small class="error-message" *ngIf="!isIgual && signupForm.controls['confirmPassword'].touched && signupForm.controls['confirmPassword'].valid">{{'PASSWORD_MACHING' | translate}} </small>
+
+        <!-- <ion-label padding float-left><ion-checkbox formControlName="termsAccepted"  [(ngModel)]="termsAccepted" (ionChange)="onTermsChecked($event)" ></ion-checkbox>{{'TERMS' | translate}}</ion-label> -->
+
+
+        <ion-button expand="block" type="submit" [disabled]="!signupForm.valid">
+          {{'ACCOUNT_CREATE' | translate}}
+        </ion-button>
+
+      </form>
+
+
+      </mat-card-content>
+      <ion-button  fill="clear" expand="block"  (click)="tryGoogleLogin()" color="danger" > <ion-icon name="logo-google"  slot="start"></ion-icon> {{'LOGIN_GOOGLE' | translate}}</ion-button>
+    </mat-card>
+
+  </main>
+</ion-content>

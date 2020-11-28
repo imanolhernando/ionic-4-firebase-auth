@@ -1,17 +1,14 @@
+import { TranslateModule } from '@ngx-translate/core';
+import { MaterialModule } from './../../modules/material.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Routes, RouterModule } from '@angular/router';
-import { IonicModule } from '@ionic/angular';
-import { LoginPage } from './login.page';
-import { TranslateModule } from '@ngx-translate/core';
 
-const routes: Routes = [
-  {
-    path: '',
-    component: LoginPage
-  }
-];
+import { IonicModule } from '@ionic/angular';
+
+import { AuthPageRoutingModule } from './auth-routing.module';
+
+import { AuthPage } from './auth.page';
 
 @NgModule({
   imports: [
@@ -20,8 +17,9 @@ const routes: Routes = [
     ReactiveFormsModule,
     TranslateModule,
     IonicModule,
-    RouterModule.forChild(routes)
+    MaterialModule,
+    AuthPageRoutingModule
   ],
-  declarations: [LoginPage]
+  declarations: [AuthPage]
 })
-export class LoginPageModule {}
+export class AuthPageModule {}

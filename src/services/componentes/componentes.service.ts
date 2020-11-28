@@ -18,18 +18,10 @@ export class ComponentesService {
   async presentToast(msg:string) {
     const toast = await this.toastController.create({
       message: msg,
-      duration: 5000,
+      duration: 150000,
       position: 'top',
-      buttons: [
-        {
-          side: 'start',
-          icon: 'star',
-          text: 'Favorite',
-          handler: () => {
-            console.log('Favorite clicked');
-          }
-        }, {
-          text: 'Done',
+      buttons: [ {
+          icon: 'close',
           role: 'cancel',
           handler: () => {
             console.log('Cancel clicked');

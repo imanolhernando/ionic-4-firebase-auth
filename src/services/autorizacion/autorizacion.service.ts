@@ -4,7 +4,7 @@ import { Platform } from '@ionic/angular';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { ComponentesService } from '../componentes/componentes.service';
-import * as firebase from 'firebase/';
+import * as firebase from 'firebase/app';
 @Injectable({
   providedIn: 'root'
 })
@@ -21,15 +21,12 @@ export class AutorizacionService {
   }
 
   doLogin(value){
-    this.componentesService.mostrarCargando();
     return new Promise<any>((resolve, reject) => {
       this.angularFireAuth
       .signInWithEmailAndPassword(value.email, value.password).then(
         res =>{
-          this.componentesService.precarga.dismiss();
           resolve(res);
         },err =>{
-          this.componentesService.precarga.dismiss();
           reject(err);
         }
       );
@@ -52,16 +49,13 @@ export class AutorizacionService {
    }
 
    sendPasswordResetEmail(value){
-    this.componentesService.mostrarCargando();
     return new Promise<any>((resolve, reject) => {
       this.angularFireAuth.useDeviceLanguage();
       this.angularFireAuth
       .sendPasswordResetEmail(value.email).then(
         res =>{
-          this.componentesService.precarga.dismiss();
           resolve(res);
         },err =>{
-          this.componentesService.precarga.dismiss();
           reject(err);
         }
       );
@@ -69,15 +63,14 @@ export class AutorizacionService {
    }
 
    async emailVerificaction(){
-    this.componentesService.mostrarCargando();
 
       this.angularFireAuth.useDeviceLanguage();
       if(this.angularFireAuth.currentUser){
         (await this.angularFireAuth.currentUser).sendEmailVerification().then(
           res =>{
-            this.componentesService.precarga.dismiss();
+            console.log(res)
           },err =>{
-            this.componentesService.precarga.dismiss();
+            console.error(err)
           }
         )}
   }

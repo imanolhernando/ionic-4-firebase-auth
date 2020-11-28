@@ -27,7 +27,7 @@ export class HomePage {
   tryLogout(){
     this.authService.doLogout().then(
     () => {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/']);
     },(e) => {
       console.log('Logout error', e);
     })
