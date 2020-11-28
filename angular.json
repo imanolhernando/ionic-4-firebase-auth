@@ -33,7 +33,10 @@
             ],
             "styles": [
               {
-                "input": "src/theme/variables.scss"
+                "input": "src/theme/material.theme.scss"
+              },
+              {
+                "input": "src/theme/ionic.theme.scss"
               },
               {
                 "input": "src/global.scss"
