@@ -23,9 +23,8 @@ export class AuthGuard implements CanActivate {
 
     return new Promise((resolve, reject) => {
       this.angularFireAuth.onAuthStateChanged(
-        (firebaseUser:  firebase.default.User) => { // buscar el modelo nuevo firebase.User
+        (firebaseUser:  firebase.default.User) => {
               if (firebaseUser) {
-                
                 resolve(true);
               } else {
                 console.log('Usuario no logeado');

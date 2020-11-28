@@ -20,69 +20,69 @@ export class AutorizacionService {
 
   }
 
-  doLogin(value){
+  doLogin(value) {
     return new Promise<any>((resolve, reject) => {
       this.angularFireAuth
       .signInWithEmailAndPassword(value.email, value.password)
-      .then(
-        res =>{
+      .then(res =>{
           resolve(res);
         })
-      .catch((err) => {
+      .catch(err => {
           reject(err);
       });
     });
    }
 
-   doLogout(){
+   doLogout() {
     return new Promise<any>((resolve, reject) => {
       if(this.angularFireAuth.currentUser){
-        this.angularFireAuth.signOut().then(
-          res =>{
+        this.angularFireAuth.signOut()
+        .then(res =>{
             resolve(res);
-          },err =>{
+          })
+        .catch((err) => {
             reject(err);
-        });
+          });
       }else{
         reject();
       }
     });
    }
 
-   sendPasswordResetEmail(value){
+   sendPasswordResetEmail(value) {
     return new Promise<any>((resolve, reject) => {
       this.angularFireAuth.useDeviceLanguage();
       this.angularFireAuth
-      .sendPasswordResetEmail(value.email).then(
-        res =>{
+      .sendPasswordResetEmail(value.email)
+      .then(res =>{
           resolve(res);
-        },err =>{
-          reject(err);
-        }
-      );
+        })
+      .catch((err) => {
+            reject(err);
+        });
     });
    }
 
-   async emailVerificaction(){
-
+   async emailVerificaction() {
       this.angularFireAuth.useDeviceLanguage();
       if(this.angularFireAuth.currentUser){
-        (await this.angularFireAuth.currentUser).sendEmailVerification().then(
-          res =>{
+        (await this.angularFireAuth.currentUser).sendEmailVerification()
+        .then( res =>{
             console.log(res)
-          },err =>{
-            console.error(err)
-          }
-        )}
-  }
+          })
+        .catch((err) => {
+            console.log(err)
+          });
+      }
+    }
 
-  doGoogleLogin(){
+  doGoogleLogin() {
     return new Promise<any>((resolve, reject) => {
       if (this.platform.is('cordova')) {
         this.googlePlus.login({}).then((response) => {
           const googleCredential = firebase.default.auth.GoogleAuthProvider.credential(response.idToken);
           firebase.default.auth().signInWithCredential(googleCredential)
-          .then((user: firebase.default.auth.UserCredential ) => {// firebase.auth.UserCredential 
+          .then((user: firebase.default.auth.UserCredential ) => {
             if(user.additionalUserInfo.isNewUser){
               this.createDoc(user);
             }
@@ -94,7 +94,7 @@ export class AutorizacionService {
       }else{
         this.angularFireAuth
         .signInWithPopup(new firebase.default.auth.GoogleAuthProvider())
-        .then((user: firebase.default.auth.UserCredential) => {// firebase.auth.UserCredential
+        .then((user: firebase.default.auth.UserCredential) => {
           if(user.additionalUserInfo.isNewUser){
             this.createDoc(user);
           }
@@ -106,17 +106,17 @@ export class AutorizacionService {
     })
   }
 
-createDoc(newUser){
+createDoc(newUser) {
   return new Promise<any>((resolve, reject) => {
     const email = newUser.user.email;
     return this.angularFirestore.doc(`/usuarios/${newUser.user.uid}`)
-      .set({ email }).then(
-        ()=>{
+      .set({ email })
+      .then(()=>{
         resolve();
-      }), err=>{
+      }).catch((err)=>{
         console.warn(err)
         reject(err);
-      };
+      });
   });
 }
 
@@ -128,14 +128,16 @@ createDoc(newUser){
       .then(
         (newUserCredential: firebase.default.auth.UserCredential) => { // TODO buscar modelo firebase.auth.UserCredential
         this.angularFirestore.doc(`/usuarios/${newUserCredential.user.uid}`)
-          .set({ email }).then(
-            ()=>{
+          .set({ email })
+          .then(()=>{
             resolve(newUserCredential);
-          }),err=>{
+          })
+          .catch((err)=>{
             console.warn(err)
             reject(err);
-          };
-      },err =>{
+          });
+      }).catch((err)=>{
+        console.warn(err)
         reject(err);
       });
     });

@@ -4,8 +4,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
-import { AutorizacionService } from 'src/services/autorizacion/autorizacion.service';
-import { ComponentesService } from 'src/services/componentes/componentes.service';
+import { AutorizacionService } from '../../services/autorizacion/autorizacion.service';
+import { ComponentesService } from '../../services/componentes/componentes.service';
 
 @Component({
   selector: 'app-auth',
@@ -34,7 +34,6 @@ export class AuthPage implements OnInit {
       this.angularFireAuth.authState.subscribe(
         (user) => {
           if (user) {
-           // console.error(user)
             this.router.navigate(['/home']);
           } else {
             console.error('NO USER')
@@ -51,22 +50,7 @@ export class AuthPage implements OnInit {
     this.createForm();
     this.translate();
   }
-  // translate(){
-  //   this.translateService.get('init').subscribe((text:string) => {
-  //     this.confirm_account = this.translateService.instant('ACCOUNT_CONFIRM'),
-  //       this.error_confirm_account = this.translateService.instant('ACCOUNT_ERROR_CONFIRM')
-  //       this.ACCOUNT_VERIFICATION = this.translateService.instant('ACCOUNT_VERIFICATION'),
-  //       this.SEND_EMAIL_VERIFICATION= this.translateService.instant('SEND_EMAIL_VERIFICATION'),
-  //       this.CANCEL = this.translateService.instant('CANCEL'),
-  //       this.VALID_EMAIL= this.translateService.instant('VALID_EMAIL'),
-  //       this.EMAIL_VERIFICATION = this.translateService.instant('ACCOUNT_VERIFICATION'),
-  //       this.ACCEPT= this.translateService.instant('ACCEPT'),
-  //       this.OK= this.translateService.instant('OK'),
-  //       this.ACCOUNT_ERROR_CONFIRM = this.translateService.instant('ACCOUNT_ERROR_CONFIRM'),
-  //       this.ACCOUNT_CONFIRM= this.translateService.instant('ACCOUNT_CONFIRM'),
-  //       this.EMAIL= this.translateService.instant('EMAIL')
-  //   });
-  // }
+
     // TRADUCCIONES
     translate() {
       this.translateService.get(
