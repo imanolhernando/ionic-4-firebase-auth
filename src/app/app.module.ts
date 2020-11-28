@@ -51,8 +51,8 @@ export function createTranslateLoader(http: HttpClient) {
     ComponentesService,
     AngularFirestore,
     GooglePlus,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

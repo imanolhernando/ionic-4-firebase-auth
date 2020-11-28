@@ -10,7 +10,7 @@ import { ComponentesService } from '../../services/componentes/componentes.servi
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.page.html',
-  styleUrls: ['./auth.page.scss'],
+  styleUrls: ['../style.scss'],
 })
 export class AuthPage implements OnInit {
   link:string;
@@ -73,7 +73,7 @@ export class AuthPage implements OnInit {
   createForm() {
     this.loginForm = this.formBuilder.group({
     email: [
-    'deknodesk@gmail.com',
+    'deknodek@gmail.com',
     [Validators.required, Validators.minLength(0), Validators.maxLength(150), Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]
     ],
     password: [
@@ -111,15 +111,13 @@ export class AuthPage implements OnInit {
     tryLogin(value){
           this.authService.doLogin(value)
           .then(res => {
-            console.log('trylogin',res)
+            console.log('trylogin',res.user.emailVerified)
             this.router.navigate(['/home']);
-            this.angularFireAuth.currentUser.then(currentUser=> {
-              if(currentUser.emailVerified){
-                  this.router.navigate(['/home']);
-                } else {
-                  this.presentAlertConfirmEmailVerificaction();
-                }
-            });
+            if(res.user.emailVerified){
+                this.router.navigate(['/home']);
+            } else {
+              this.presentAlertConfirmEmailVerificaction();
+            }
           }).catch(e=>{
             console.warn(e);
               this.componentesService.presentToast(this.authService.authErrorCode(e));
@@ -130,7 +128,11 @@ export class AuthPage implements OnInit {
       this.authService.doGoogleLogin()
       .then((res) => {
         console.log('tryGoogleLogin',res);
-        this.router.navigate(['/home']);
+        if(res.user.emailVerified){
+          this.router.navigate(['/home']);
+        } else {
+          this.presentAlertConfirmEmailVerificaction();
+        }
       }, (err) => {
         this.componentesService.presentToast(this.authService.authErrorCode(err));
       });

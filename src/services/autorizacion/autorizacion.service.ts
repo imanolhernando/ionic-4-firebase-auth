@@ -21,7 +21,7 @@ export class AutorizacionService {
   }
 
   doLogin(value) {
-    return new Promise<any>((resolve, reject) => {
+    return new Promise<firebase.default.auth.UserCredential>((resolve, reject) => {
       this.angularFireAuth
       .signInWithEmailAndPassword(value.email, value.password)
       .then(res =>{
@@ -82,7 +82,7 @@ export class AutorizacionService {
         this.googlePlus.login({}).then((response) => {
           const googleCredential = firebase.default.auth.GoogleAuthProvider.credential(response.idToken);
           firebase.default.auth().signInWithCredential(googleCredential)
-          .then((user: firebase.default.auth.UserCredential ) => {
+          .then((user ) => {
             if(user.additionalUserInfo.isNewUser){
               this.createDoc(user);
             }

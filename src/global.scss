@@ -24,6 +24,18 @@
 // @import "~@ionic/angular/css/text-alignment.css";
 // @import "~@ionic/angular/css/text-transformation.css";
 // @import "~@ionic/angular/css/flex-utils.css";
+.invalid {
+    border-bottom: 1px solid var(--ion-color-danger);
+  }
+  
+  .error-message {
+    display: block;
+    margin: 2px 0;
+    color:  var(--ion-color-danger);
+    .item-inner {
+      border-bottom: 0 !important;
+    }
+  }
 
 ion-toast::part(container) {
 	background: #fff;

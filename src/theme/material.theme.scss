@@ -1,3 +1,5 @@
+
+// ["043b66","2b4145","e3eaee","14659d","e3eaee"]
 /**
 * Generated theme by Material Theme Generator
 * https://materialtheme.arcsine.dev
@@ -30,7 +32,7 @@ $fontConfig: (
 // Foreground Elements
 
 // Light Theme Text
-$dark-text: #172939;
+$dark-text: #000000;
 $dark-primary-text: rgba($dark-text, 0.87);
 $dark-accent-text: rgba($dark-primary-text, 0.54);
 $dark-disabled-text: rgba($dark-primary-text, 0.38);
@@ -57,7 +59,7 @@ $mat-light-theme-foreground: (
 );
 
 // Dark Theme text
-$light-text: #ffffff;
+$light-text: #e3eaee;
 $light-primary-text: $light-text;
 $light-accent-text: rgba($light-primary-text, 0.7);
 $light-disabled-text: rgba($light-primary-text, 0.5);
@@ -85,15 +87,15 @@ $mat-dark-theme-foreground: (
 
 // Background config
 // Light bg
-$light-background:    #f9fdff;
+$light-background:    #e3eaee;
 $light-bg-darker-5:   darken($light-background, 5%);
 $light-bg-darker-10:  darken($light-background, 10%);
 $light-bg-darker-20:  darken($light-background, 20%);
 $light-bg-darker-30:  darken($light-background, 30%);
 $light-bg-lighter-5:  lighten($light-background, 5%);
-$dark-bg-tooltip:     lighten(#3e4c59, 20%);
-$dark-bg-alpha-4:     rgba(#3e4c59, 0.04);
-$dark-bg-alpha-12:    rgba(#3e4c59, 0.12);
+$dark-bg-tooltip:     lighten(#2c2c2c, 20%);
+$dark-bg-alpha-4:     rgba(#2c2c2c, 0.04);
+$dark-bg-alpha-12:    rgba(#2c2c2c, 0.12);
 
 $mat-light-theme-background: (
   background:               $light-background,
@@ -114,13 +116,13 @@ $mat-light-theme-background: (
 );
 
 // Dark bg
-$dark-background:     #3e4c59;
+$dark-background:     #2c2c2c;
 $dark-bg-lighter-5:   lighten($dark-background, 5%);
 $dark-bg-lighter-10:  lighten($dark-background, 10%);
 $dark-bg-lighter-20:  lighten($dark-background, 20%);
 $dark-bg-lighter-30:  lighten($dark-background, 30%);
-$light-bg-alpha-4:    rgba(#f9fdff, 0.04);
-$light-bg-alpha-12:   rgba(#f9fdff, 0.12);
+$light-bg-alpha-4:    rgba(#e3eaee, 0.04);
+$light-bg-alpha-12:   rgba(#e3eaee, 0.12);
 
 // Background palette for dark themes.
 $mat-dark-theme-background: (
@@ -146,13 +148,20 @@ $mat-dark-theme-background: (
 
 // Theme Config
 
-
+body {
+  --primary-color: #043b66;
+  --primary-lighter-color: #b4c4d1;
+  --primary-darker-color: #022649;
+  --text-primary-color: #{$light-primary-text};
+  --text-primary-lighter-color: #{$dark-primary-text};
+  --text-primary-darker-color: #{$light-primary-text};
+}
 
 $mat-primary: (
-  main: #467a9b,
-  lighter: #c8d7e1,
-  darker: #2f5d7f,
-  200: #467a9b, // For slide toggle,
+  main: #043b66,
+  lighter: #b4c4d1,
+  darker: #022649,
+  200: #043b66, // For slide toggle,
   contrast : (
     main: $light-primary-text,
     lighter: $dark-primary-text,
@@ -161,26 +170,42 @@ $mat-primary: (
 );
 $theme-primary: mat-palette($mat-primary, main, lighter, darker);
 
+body {
+  --accent-color: #e3eaee;
+  --accent-lighter-color: #f7f9fa;
+  --accent-darker-color: #d8e1e7;
+  --text-accent-color: #{$dark-primary-text};
+  --text-accent-lighter-color: #{$dark-primary-text};
+  --text-accent-darker-color: #{$dark-primary-text};
+}
 
 $mat-accent: (
-  main: #3e4c59,
-  lighter: #c5c9cd,
-  darker: #28333e,
-  200: #3e4c59, // For slide toggle,
+  main: #e3eaee,
+  lighter: #f7f9fa,
+  darker: #d8e1e7,
+  200: #e3eaee, // For slide toggle,
   contrast : (
-    main: $light-primary-text,
+    main: $dark-primary-text,
     lighter: $dark-primary-text,
-    darker: $light-primary-text,
+    darker: $dark-primary-text,
   )
 );
 $theme-accent: mat-palette($mat-accent, main, lighter, darker);
 
+body {
+  --warn-color: #990a0a;
+  --warn-lighter-color: #e0b6b6;
+  --warn-darker-color: #7c0505;
+  --text-warn-color: #{$light-primary-text};
+  --text-warn-lighter-color: #{$dark-primary-text};
+  --text-warn-darker-color: #{$light-primary-text};
+}
 
 $mat-warn: (
-  main: #c42406,
-  lighter: #edbdb4,
-  darker: #af1603,
-  200: #c42406, // For slide toggle,
+  main: #990a0a,
+  lighter: #e0b6b6,
+  darker: #7c0505,
+  200: #990a0a, // For slide toggle,
   contrast : (
     main: $light-primary-text,
     lighter: $dark-primary-text,
@@ -192,28 +217,6 @@ $theme-warn: mat-palette($mat-warn, main, lighter, darker);;
 $theme: mat-light-theme($theme-primary, $theme-accent, $theme-warn);
 $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
 
-body {
-  --warn-color: #c42406;
-  --warn-lighter-color: #edbdb4;
-  --warn-darker-color: #af1603;
-  --text-warn-color: #{$light-primary-text};
-  --text-warn-lighter-color: #{$dark-primary-text};
-  --text-warn-darker-color: #{$light-primary-text};
-
-  --primary-color: #5482aa;
-  --primary-lighter-color: #c8d7e1;
-  --primary-darker-color: #2f5d7f;
-  --text-primary-color: #{$light-primary-text};
-  --text-primary-lighter-color: #{$dark-primary-text};
-  --text-primary-darker-color: #{$light-primary-text};
-
-  --accent-color: #3e4c59;
-  --accent-lighter-color: #c5c9cd;
-  --accent-darker-color: #28333e;
-  --text-accent-color: #{$light-primary-text};
-  --text-accent-lighter-color: #{$dark-primary-text};
-  --text-accent-darker-color: #{$light-primary-text};
-}
 // Theme Init
 @include angular-material-theme($theme);
 
@@ -238,7 +241,7 @@ body {
 
 .material-icons {
   font-size: 24px;
-  font-family: 'Material Icons';  
+  font-family: 'Material Icons', 'Material Icons';  
   .mat-badge-content {
     font-family: 'Roboto';
   }

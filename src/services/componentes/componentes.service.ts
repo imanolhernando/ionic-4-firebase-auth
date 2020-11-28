@@ -21,7 +21,7 @@ export class ComponentesService {
     this.toastController.dismiss().catch(e=>{});
     const toast = await this.toastController.create({
       message: msg,
-      duration: 150000,
+      duration: 10000,
       position: 'top',
       buttons: [ {
           icon: 'close',
