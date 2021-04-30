@@ -111,8 +111,8 @@ createDoc(newUser) {
     const email = newUser.user.email;
     return this.angularFirestore.doc(`/usuarios/${newUser.user.uid}`)
       .set({ email })
-      .then(()=>{
-        resolve();
+      .then((data)=>{
+        resolve(data);
       }).catch((err)=>{
         console.warn(err)
         reject(err);
