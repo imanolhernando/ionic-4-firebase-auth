@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class HomePage {
 
-  private user;
+  public user;
 
   constructor(
     private authService: AutorizacionService,
